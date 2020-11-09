@@ -316,7 +316,7 @@
 							<licenseLocation>
 								${clover.license.path}
 							</licenseLocation>
-							<jdk>1.5</jdk>
+							<jdk>1.6</jdk>
 						</configuration>
 						<executions>
 							<execution>
@@ -345,7 +345,7 @@
 						<artifactId>maven-clover2-plugin</artifactId>
 						<configuration>
 							<licenseLocation>${clover.license.path}</licenseLocation>
-							<jdk>1.5</jdk>
+							<jdk>1.6</jdk>
 							<configuration>
 								<generateHtml>true</generateHtml>
 								<generateXml>true</generateXml>
