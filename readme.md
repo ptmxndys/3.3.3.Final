@@ -23,9 +23,840 @@ mvn clean install -Dmaven.test.skip=true -Prelease
 以下修改：
 pom.xml
 
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.richfaces</groupId>
+	<artifactId>root</artifactId>
+	<packaging>pom</packaging>
+	<name>RichFaces project</name>
+	<version>3.3.3.Final</version>
+	<url>http://labs.jboss.com/jbossrichfaces</url>
+	<properties>
+		<snapshotRepository>
+			dav:https://snapshots.jboss.org/maven2
+		</snapshotRepository>
+<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+<maven.compiler.encoding>UTF-8</maven.compiler.encoding>
+	</properties>
+	<dependencies />
+	<build>
+	
+	
+      <resources>
+        <resource>
+            <directory>src/main/resources</directory>
+            <excludes>
+                <exclude>**/*.properties</exclude>
+                <exclude>**/*.xml</exclude>
+             </excludes>
+            <filtering>false</filtering>
+        </resource>
+        <resource>
+            <directory>src/main/java</directory>
+            <includes>
+                <include>**/*.properties</include>
+                <include>**/*.xml</include>
+            </includes>
+            <filtering>false</filtering>
+        </resource>
+        <resource>
+            <directory>src/main/config</directory>
+            <includes>
+                <include>**/*.properties</include>
+                <include>**/*.xml</include>
+            </includes>
+            <filtering>false</filtering>
+        </resource>
+    </resources>
+	
+	
+	
+	
+	
+		<extensions>
+			<extension>
+				<groupId>org.apache.maven.wagon</groupId>
+				<artifactId>wagon-webdav</artifactId>
+				<version>1.0-beta-2</version>
+			</extension>
+			<extension>
+				<groupId>postgresql</groupId>
+				<artifactId>postgresql</artifactId>
+				<version>8.2-504.jdbc3</version>
+			</extension>
+			<!-- scm deployment wagon 
+			<extension>
+				<groupId>org.apache.maven.wagon</groupId>
+				<artifactId>wagon-scm</artifactId>
+				<version>1.0-alpha-5</version>
+			</extension>
+			<extension>
+				<groupId>org.apache.maven.scm</groupId>
+				<artifactId>maven-scm-manager-plexus</artifactId>
+				<version>1.0</version>
+			</extension>
+			<extension>
+				<groupId>org.apache.maven.scm</groupId>
+				<artifactId>maven-scm-provider-svnexe</artifactId>
+				<version>1.0</version>
+			</extension>
+			-->
+		</extensions>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-jar-plugin</artifactId>
+					<version>2.1</version>
+					<configuration>
+						<archive>
+							<index>true</index>
+							<manifest>
+								<addDefaultSpecificationEntries>
+									true
+								</addDefaultSpecificationEntries>
+								<addDefaultImplementationEntries>
+									true
+								</addDefaultImplementationEntries>
+							</manifest>
+							<manifestEntries>
+								<mode>development</mode>
+								<Build-Number>
+									${buildNumber}
+								</Build-Number>
+							</manifestEntries>
+						</archive>
+					</configuration>
+				</plugin>
+				<plugin>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-surefire-plugin</artifactId>
+    <version>2.4.2</version>
+    <configuration>
+        <systemProperties>
+            <!--<property>
+                <name>org.ajax4jsf.test.checkXHTML.file</name>
+                <value>C:/m2.txt</value>
+            </property>-->
+	    <property>
+                <name>org.ajax4jsf.test.checkXHTML</name>
+                <value>true</value>
+            </property>
+        </systemProperties>
+    </configuration>
+</plugin>
+
+			</plugins>
+		</pluginManagement>
+	</build>
+	<modules>
+		<!--
+		<module>cdk</module>
+		-->
+		<module>framework</module>
+		<module>ui</module>
+		<!--
+		<module>extensions</module>
+		<module>ui/assembly</module>
+			<module>sandbox</module>
+		-->
+	</modules>
+	<repositories>
+		<repository>
+			<releases />
+			<snapshots>
+				<enabled>false</enabled>
+				<updatePolicy>never</updatePolicy>
+			</snapshots>
+			<id>maven-repository.dev.java.net</id>
+			<name>Java.net Repository for Maven</name>
+			<url>http://download.java.net/maven/1</url>
+			<layout>legacy</layout>
+		</repository>
+		<repository>
+			<releases />
+			<snapshots>
+				<enabled>false</enabled>
+				<updatePolicy>never</updatePolicy>
+			</snapshots>
+			<id>maven2-repository.dev.java.net</id>
+			<name>Java.net Repository for Maven</name>
+			<url>http://download.java.net/maven/2/</url>
+			<layout>default</layout>
+		</repository>
+		<repository>
+			<releases />
+			<snapshots>
+				<enabled>false</enabled>
+				<updatePolicy>never</updatePolicy>
+			</snapshots>
+			<id>repository.jboss.org</id>
+			<url>http://repository.jboss.org/maven2</url>
+		</repository>
+	</repositories>
+    <pluginRepositories>
+      <pluginRepository>
+        <id>atlassian-m2-repository</id>
+        <name>Atlassian Maven 2.x Repository</name>
+        <url>http://repository.atlassian.com/maven2</url>
+      </pluginRepository>
+    </pluginRepositories>	
+	<distributionManagement>
+		<downloadUrl>
+			http://www.jboss.org/richfaces/download
+		</downloadUrl>
+		<repository>
+			<id>repository.jboss.org</id>
+			<uniqueVersion>false</uniqueVersion>
+			<url>${releaseRepository}</url>
+		</repository>
+		<snapshotRepository>
+			<id>snapshots.jboss.org</id>
+			<uniqueVersion>true</uniqueVersion>
+			<url>${snapshotRepository}</url>
+		</snapshotRepository>
+		<!--site>
+			<url>file:target/site2</url>
+		</site-->
+	</distributionManagement>
+	<issueManagement>
+		<system>JIRA</system>
+		<url>http://jira.jboss.org/jira/browse/RF</url>
+	</issueManagement>
+	<developers>
+		<developer>
+			<id>jbalunas</id>
+			<name>Jay Balunas</name>
+			<email>jbalunas@redhat.com</email>
+			<organization>JBoss, by RedHat Inc.</organization>
+			<organizationUrl>http://www.jboss.org</organizationUrl>
+			<roles>
+				<role>lead</role>
+			</roles>
+			<timezone>-5</timezone>
+		</developer>
+		<developer>
+			<id>alexsmirnov</id>
+			<name>Alexander Smirnov</name>
+			<email>alexsmirnov@exadel.com</email>
+			<organization>Exadel Inc.</organization>
+			<organizationUrl>http://www.exadel.com</organizationUrl>
+			<roles>
+				<role>architect</role>
+				<role>developer</role>
+			</roles>
+			<timezone>-8</timezone>
+		</developer>
+		<developer>
+			<id>nbelayevsky</id>
+			<name>Nick Belyaevsky</name>
+			<email>nbelayevsky@exadel.com</email>
+			<organization>Exadel Inc.</organization>
+			<organizationUrl>http://www.exadel.com</organizationUrl>
+			<roles>
+				<role>architect</role>
+				<role>developer</role>
+			</roles>
+			<timezone>+2</timezone>
+		</developer>
+		<developer>
+			<id>kmishin</id>
+			<name>Konstantin Mishin</name>
+			<email>kmishin@exadel.com</email>
+			<organization>Exadel Inc.</organization>
+			<organizationUrl>http://www.exadel.com</organizationUrl>
+			<roles>
+				<role>developer</role>
+			</roles>
+			<timezone>+2</timezone>
+		</developer>
+		<developer>
+			<id>abelevich</id>
+			<name>Anton Belevich</name>
+			<email>abelevich@exadel.com</email>
+			<organization>Exadel Inc.</organization>
+			<organizationUrl>http://www.exadel.com</organizationUrl>
+			<roles>
+				<role>developer</role>
+			</roles>
+			<timezone>+2</timezone>
+		</developer>
+		<developer>
+			<id>pyaschenko</id>
+			<name>Pavel Yaschenko</name>
+			<email>pyaschenko@exadel.com</email>
+			<organization>Exadel Inc.</organization>
+			<organizationUrl>http://www.exadel.com</organizationUrl>
+			<roles>
+				<role>developer</role>
+			</roles>
+			<timezone>+2</timezone>
+		</developer>
+		<developer>
+			<id>amarkhel</id>
+			<name>Andrey Markhel</name>
+			<email>amarkhel@exadel.com</email>
+			<organization>Exadel Inc.</organization>
+			<organizationUrl>http://www.exadel.com</organizationUrl>
+			<roles>
+				<role>developer</role>
+			</roles>
+			<timezone>+2</timezone>
+		</developer>
+		<developer>
+			<id>akolonitsky</id>
+			<name>Alex Kolonitsky</name>
+			<email>akolonitsky@exadel.com</email>
+			<organization>Exadel Inc.</organization>
+			<organizationUrl>http://www.exadel.com</organizationUrl>
+			<roles>
+				<role>developer</role>
+			</roles>
+			<timezone>+2</timezone>
+		</developer>
+		<developer>
+			<id>ishaikovsky</id>
+			<name>Ilya Shaikovsky</name>
+			<email>ishaikovsky@exadel.com</email>
+			<organization>Exadel Inc.</organization>
+			<organizationUrl>http://www.exadel.com</organizationUrl>
+			<roles>
+				<role>developer</role>
+			</roles>
+			<timezone>+2</timezone>
+		</developer>
+	</developers>
+	<licenses>
+		<license>
+			<name>LGPL 2.1</name>
+			<url>http://www.gnu.org/licenses/lgpl.html</url>
+			<distribution>repo</distribution>
+			<comments>
+				GNU LESSER GENERAL PUBLIC LICENSE Version 2.1
+			</comments>
+		</license>
+	</licenses>
+	<scm>
+		<connection>scm:svn:http://anonsvn.jboss.org/repos/richfaces/branches/community/3.3.X</connection>
+		<developerConnection>scm:svn:https://svn.jboss.org/repos/richfaces/branches/community/3.3.X</developerConnection>
+		<url>https://svn.jboss.org/repos/richfaces/branches/community/3.3.X</url>
+	</scm>
+	<profiles>
+		<profile>
+			<id>jsf2_0</id>
+			<build>
+				<plugins>
+					<plugin>
+						<artifactId>maven-deploy-plugin</artifactId>
+						<configuration>
+							<skip>true</skip>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+		<profile>
+			<id>sandbox</id>
+			<modules>
+				<module>sandbox</module>
+			</modules>
+		</profile>
+		<profile>
+			<id>clover</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>com.atlassian.maven.plugins</groupId>
+						<artifactId>maven-clover2-plugin</artifactId>
+						<version>2.3.1</version>
+						<configuration>
+							<includesAllSourceRoots>
+								true
+							</includesAllSourceRoots>
+							<licenseLocation>
+								${clover.license.path}
+							</licenseLocation>
+							<jdk>1.6</jdk>
+						</configuration>
+						<executions>
+							<execution>
+								<id>site</id>
+								<phase>verify</phase>
+								<goals>
+									<goal>instrument</goal>
+								</goals>
+							</execution>
+							<execution>
+								<id>site-aggregate</id>
+								<phase>pre-site</phase>
+								<goals>
+									<goal>aggregate</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+
+			</build>
+			<reporting>
+				<plugins>
+					<plugin>
+						<groupId>com.atlassian.maven.plugins</groupId>
+						<artifactId>maven-clover2-plugin</artifactId>
+						<configuration>
+							<licenseLocation>${clover.license.path}</licenseLocation>
+							<jdk>1.6</jdk>
+							<configuration>
+								<generateHtml>true</generateHtml>
+								<generateXml>true</generateXml>
+							</configuration>
+						</configuration>
+					</plugin>
+				</plugins>
+			</reporting>
+		</profile>
+	</profiles>
+</project>
 
 
 
 
 
 ui/assembly/pom.xml
+
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<parent>
+		<artifactId>ui</artifactId>
+		<groupId>org.richfaces</groupId>
+		<version>3.3.3.Final</version>
+	</parent>
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.richfaces.ui</groupId>
+	<artifactId>richfaces-ui</artifactId>
+	<name>RichFaces JSF components library</name>
+	<packaging>jar</packaging>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.richfaces.cdk</groupId>
+				<artifactId>maven-cdk-plugin</artifactId>
+				<version>3.3.3.Final</version>
+				<configuration>
+					<library>
+						<prefix>org.richfaces</prefix>
+						<description>RichFaces components</description>
+						<taglibs>
+							<taglib>
+								<shortName>richfaces</shortName>
+								<taglib>richfaces</taglib>
+								<uri>
+									http://richfaces.ajax4jsf.org/rich
+								</uri>
+								<displayName>
+									RichFaces ( Legacy URL )
+								</displayName>
+								<excludeModules>core,state</excludeModules>
+							</taglib>
+							<taglib>
+								<shortName>rich</shortName>
+								<taglib>rich</taglib>
+								<uri>http://richfaces.org/rich</uri>
+								<displayName>RichFaces</displayName>
+								<excludeModules>core,state</excludeModules>
+							</taglib>
+							<taglib>
+								<shortName>a4j</shortName>
+								<taglib>ajax4jsf</taglib>
+								<uri>http://richfaces.org/a4j</uri>
+								<displayName>Ajax4Jsf</displayName>
+								<includeModules>core</includeModules>
+							</taglib>
+							<taglib>
+								<shortName>ajax</shortName>
+								<taglib>a4j</taglib>
+								<uri>
+									https://ajax4jsf.dev.java.net/ajax
+								</uri>
+								<displayName>
+									Ajax4jsf ( Legacy URL )
+								</displayName>
+								<includeModules>core</includeModules>
+							</taglib>
+						</taglibs>
+					</library>
+					<!--
+						<templateXpath>/*[local-name()='template']/*</templateXpath>
+					-->
+					<excludeXcss>**/basic.xcss, **/basic_classes.xcss, **/basic_both.xcss, **/extended.xcss, **/extended_classes.xcss, **/extended_both.xcss, **/skin*.xcss, **/tiny_mce/**, **/org/richfaces/renderkit/html/css/simple.xcss, **/org/richfaces/renderkit/html/css/violetRays.xcss</excludeXcss>
+					<commonStyle>org/richfaces/skin.xcss</commonStyle>
+					<includeProjectDependencies>true</includeProjectDependencies>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>assembly</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<!-- append extracted sources , for pack with library -->
+
+			<plugin>
+				<artifactId>maven-jar-plugin</artifactId>
+				<configuration>
+					<outputDirectory>
+						${project.build.directory}/dist
+					</outputDirectory>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.richfaces.cdk</groupId>
+				<artifactId>maven-javascript-plugin</artifactId>
+				<version>${project.version}</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>compress</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<nosuffix>false</nosuffix>
+					<outputDirectory>
+						${project.build.directory}/compressed/
+					</outputDirectory>
+					<aggregations>
+						<aggregation>
+							<!-- remove files after aggregation (default: false)
+								<removeIncluded>true</removeIncluded>
+							-->
+							<!-- insert new line after each concatenation (default: false) -->
+							<insertNewLine>true</insertNewLine>
+							
+							<!-- insert semicolon after each concatenation (default: false) -->
+							<insertSemicolon>true</insertSemicolon>
+							
+							<output>
+								${project.build.outputDirectory}/org/richfaces/ui.pack.js
+							</output>
+							<!-- files to include, path relative to output's directory or absolute path-->
+							<includes>
+								<include>
+									${project.build.directory}/compressed/org/richfaces/renderkit/html/scripts/drag-indicator-min.js
+								</include>
+								<include>
+									${project.build.directory}/compressed/org/richfaces/renderkit/html/scripts/simple-draggable-min.js
+								</include>
+								<include>
+									${project.build.directory}/compressed/org/richfaces/renderkit/html/scripts/simple-dropzone-min.js
+								</include>
+								<include>
+									${project.build.directory}/compressed/org/richfaces/renderkit/html/scripts/tree-min.js
+								</include>
+								<include>
+									${project.build.directory}/compressed/org/richfaces/renderkit/html/scripts/tree-selection-min.js
+								</include>
+								<include>
+									${project.build.directory}/compressed/org/richfaces/renderkit/html/scripts/tree-item-min.js
+								</include>
+								<include>
+									${project.build.directory}/compressed/org/richfaces/renderkit/html/scripts/tree-item-dnd-min.js
+								</include>
+								<include>
+									${project.build.directory}/compressed/org/richfaces/renderkit/html/scripts/modalPanel-min.js
+								</include>
+								<include>
+									${project.build.directory}/compressed/org/richfaces/renderkit/html/scripts/modalPanelBorders-min.js
+								</include>
+								<include>
+									${project.build.directory}/compressed/org/richfaces/renderkit/html/scripts/ShuttleUtils-min.js
+								</include>
+								<include>
+									${project.build.directory}/compressed/org/richfaces/renderkit/html/scripts/SelectItem-min.js
+								</include>
+								<include>
+									${project.build.directory}/compressed/org/richfaces/renderkit/html/scripts/LayoutManager-min.js
+								</include>
+								<include>
+									${project.build.directory}/compressed/org/richfaces/renderkit/html/scripts/Control-min.js
+								</include>
+								<include>
+									${project.build.directory}/compressed/org/richfaces/renderkit/html/scripts/ListBase-min.js
+								</include>
+								<include>
+									${project.build.directory}/compressed/org/richfaces/renderkit/html/scripts/OrderingList-min.js
+								</include>
+								<include>
+									${project.build.directory}/compressed/org/richfaces/renderkit/html/scripts/ListShuttle-min.js
+								</include>
+								<include>
+									${project.build.directory}/compressed/org/richfaces/renderkit/html/scripts/PickListSI-min.js
+								</include>
+								<include>
+									${project.build.directory}/compressed/org/richfaces/renderkit/html/scripts/PickList-min.js
+								</include>
+								<include>
+									${project.build.directory}/compressed/org/richfaces/renderkit/html/scripts/comboboxUtils-min.js
+								</include>
+								<include>
+									${project.build.directory}/compressed/org/richfaces/renderkit/html/scripts/combolist-min.js
+								</include>
+								<include>
+									${project.build.directory}/compressed/org/richfaces/renderkit/html/scripts/inplaceinputstyles-min.js
+								</include>
+								<include>
+									${project.build.directory}/compressed/org/richfaces/renderkit/html/scripts/inplaceinput-min.js
+								</include>
+								<include>
+									${project.build.directory}/compressed/org/richfaces/renderkit/html/scripts/inplaceselectstyles-min.js
+								</include>
+								<include>
+									${project.build.directory}/compressed/org/richfaces/renderkit/html/scripts/inplaceselectlist-min.js
+								</include>
+								<include>
+									${project.build.directory}/compressed/org/richfaces/renderkit/html/scripts/inplaceselect-min.js
+								</include>
+								<include>
+									${project.build.directory}/compressed/org/richfaces/renderkit/html/scripts/common-scrollable-data-table-min.js
+								</include>
+
+								<include>
+									${project.build.directory}/compressed/org/richfaces/renderkit/html/scripts/tiny_mce/tiny_mce_src-min.js
+								</include>
+								<include>
+									${project.build.directory}/compressed/org/richfaces/renderkit/html/scripts/editor-min.js
+								</include>
+
+								<include>
+									${project.build.directory}/compressed/org/richfaces/renderkit/html/scripts/pngFix-min.js
+								</include>
+								<include>
+									${project.build.directory}/compressed/org/richfaces/renderkit/html/scripts/ui.colorpicker-min.js
+								</include>
+								
+								<include>**/*-min.js</include>
+							</includes>
+							<!-- files to exclude, path relative to output's directory -->
+							<excludes>
+								<exclude>**/*.pack.js</exclude>
+								<!--
+									<exclude>
+									${project.build.directory}/compressed/org/richfaces/renderkit/html/scripts/jquery.jcarousel-min.js
+									</exclude>
+								-->
+
+								<!-- rich:editor configuration -->
+
+								<exclude>**/tiny_mce/**</exclude>
+								<!--exclude>**/editor-min.js</exclude-->
+								
+								<!-- -->
+								
+								<exclude>**/scriptaculo*</exclude>
+								<exclude>**/scriptaculo*/**</exclude>
+							</excludes>
+						</aggregation>
+					</aggregations>
+					<!--
+						<warSourceDirectory>${project.build.directory}/modules</warSourceDirectory>
+						<webappDirectory>${project.build.directory}/compressed</webappDirectory>
+					-->
+					<includes>
+						<include>**/*.js</include>
+					</includes>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+	<profiles>
+		<profile>
+			<id>release</id>
+
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>net.sourceforge.maven-taglib</groupId>
+						<artifactId>maven-taglib-plugin</artifactId>
+						<configuration>
+							<taglib.src.dir>
+								${project.build.outputDirectory}/META-INF
+							</taglib.src.dir>
+							<tldDocDir>
+								${project.build.directory}/tlddoc
+							</tldDocDir>
+						</configuration>
+
+						<executions>
+							<execution>
+								<id>attach-javadoc</id>
+								<phase>process-resources</phase>
+								<goals>
+									<goal>taglibdocjar</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-javadoc-plugin</artifactId>
+						<version>2.2</version>
+						<executions>
+							<execution>
+								<id>attach-javadoc</id>
+								<goals>
+									<goal>jar</goal>
+								</goals>
+							</execution>
+						</executions>
+						<configuration>
+							<javadocVersion>1.5</javadocVersion>
+						</configuration>
+					</plugin>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-dependency-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>unpack</id>
+								<phase>generate-resources</phase>
+								<goals>
+									<goal>unpack</goal>
+								</goals>
+								<configuration>
+									<artifactItems>
+										<artifactItem>
+											<groupId>
+												org.richfaces.docs.userguide
+											</groupId>
+											<artifactId>en</artifactId>
+											<version>
+												${project.version}
+											</version>
+											<type>jar</type>
+											<!--classifier>pdf</classifier-->
+											<outputDirectory>
+												${project.build.directory}/docs/userguide/en
+											</outputDirectory>
+										</artifactItem>
+										<artifactItem>
+											<groupId>
+												org.richfaces.docs.faq
+											</groupId>
+											<artifactId>en</artifactId>
+											<version>
+												${project.version}
+											</version>
+											<type>jar</type>
+											<!--classifier>pdf</classifier-->
+											<outputDirectory>
+												${project.build.directory}/docs/faq/en
+											</outputDirectory>
+										</artifactItem>
+										<artifactItem>
+											<groupId>
+												org.richfaces.docs.cdkguide
+											</groupId>
+											<artifactId>en</artifactId>
+											<version>
+												${project.version}
+											</version>
+											<type>jar</type>
+											<!--classifier>pdf</classifier-->
+											<outputDirectory>
+												${project.build.directory}/docs/cdkguide/en
+											</outputDirectory>
+										</artifactItem>
+										<artifactItem>
+											<groupId>
+												org.richfaces.docs.migration
+											</groupId>
+											<artifactId>en</artifactId>
+											<version>
+												${project.version}
+											</version>
+											<type>jar</type>
+											<!--classifier>pdf</classifier-->
+											<outputDirectory>
+												${project.build.directory}/docs/migration/en
+											</outputDirectory>
+										</artifactItem>
+										
+										<artifactItem>
+											<groupId>
+												org.richfaces.docs.photo_album_app_guide
+											</groupId>
+											<artifactId>en</artifactId>
+											<version>
+												${project.version}
+											</version>
+											<type>jar</type>
+											<!--classifier>pdf</classifier-->
+											<outputDirectory>
+												${project.build.directory}/docs/photo_album_app_guide/en
+											</outputDirectory>
+										</artifactItem>
+										
+									</artifactItems>
+									<outputDirectory>
+										${project.build.directory}/docs
+									</outputDirectory>
+									<overWriteReleases>
+										false
+									</overWriteReleases>
+									<overWriteSnapshots>
+										true
+									</overWriteSnapshots>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
+						<artifactId>maven-assembly-plugin</artifactId>
+						<configuration>
+							<outputDirectory>
+								${project.build.directory}/dist
+							</outputDirectory>
+							<descriptors>
+								<descriptor>
+									${basedir}/src/main/assembly/richfaces.xml
+								</descriptor>
+								<descriptor>
+									${basedir}/src/main/assembly/src.xml
+								</descriptor>
+							</descriptors>
+						</configuration>
+						<executions>
+							<execution>
+								<id>make-assembly</id>
+								<phase>package</phase>
+								<goals>
+									<goal>attached</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+			<dependencies>
+				<dependency>
+					<groupId>org.richfaces.framework</groupId>
+					<artifactId>richfaces-api</artifactId>
+					<version>3.3.3.Final</version>
+				</dependency>
+				<dependency>
+					<groupId>org.richfaces.framework</groupId>
+					<artifactId>richfaces-impl</artifactId>
+					<version>3.3.3.Final</version>
+				</dependency>
+				<dependency>
+					<groupId>org.richfaces.framework</groupId>
+					<artifactId>richfaces-impl-jsf2</artifactId>
+					<version>3.3.3.Final</version>
+				</dependency>
+			</dependencies>
+		</profile>
+	</profiles>
+	<dependencies />
+</project>
